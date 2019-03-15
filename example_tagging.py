@@ -58,6 +58,7 @@ def main(net):
             melgram = np.load(melgram_path)
             melgrams = np.concatenate((melgrams, melgram), axis=0)
 
+    print(melgrams.shape)
     # load model like this
     if net == 'cnn':
         model = MusicTaggerCNN(weights='msd')

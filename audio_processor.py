@@ -29,10 +29,11 @@ def compute_melgram(audio_path):
         src = np.hstack((src, np.zeros((int(DURA*SR) - n_sample,))))
     elif n_sample > n_sample_fit:  # if too long
         src = src[(n_sample-n_sample_fit)/2:(n_sample+n_sample_fit)/2]
-    logam = librosa.logamplitude
+    # logam = librosa.logamplitude
+    logam = librosa.amplitude_to_db
     melgram = librosa.feature.melspectrogram
     ret = logam(melgram(y=src, sr=SR, hop_length=HOP_LEN,
                         n_fft=N_FFT, n_mels=N_MELS)**2,
-                ref_power=1.0)
+                ref=1.0)
     ret = ret[np.newaxis, np.newaxis, :]
     return ret

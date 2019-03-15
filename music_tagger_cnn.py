@@ -63,10 +63,12 @@ def MusicTaggerCNN(weights='msd', input_tensor=None,
                          '(pre-training on Million Song Dataset).')
 
     # Determine proper input shape
+    print(K.image_dim_ordering())
     if K.image_dim_ordering() == 'th':
         input_shape = (1, 96, 1366)
     else:
-        input_shape = (96, 1366, 1)
+        #input_shape = (96, 1366, 1)
+        input_shape = (1, 96, 1366)
 
     if input_tensor is None:
         melgram_input = Input(shape=input_shape)
@@ -126,13 +128,15 @@ def MusicTaggerCNN(weights='msd', input_tensor=None,
 
     # Create model
     model = Model(melgram_input, x)
+
+    print(K._BACKEND)
     if weights is None:
         return model    
     else: 
         # Load input
-        if K.image_dim_ordering() == 'tf':
-            raise RuntimeError("Please set image_dim_ordering == 'th'."
-                               "You can set it at ~/.keras/keras.json")
+        # if K.image_dim_ordering() == 'tf':
+        #     raise RuntimeError("Please set image_dim_ordering == 'th'."
+        #                        "You can set it at ~/.keras/keras.json")
         model.load_weights('data/music_tagger_cnn_weights_%s.h5' % K._BACKEND,
                            by_name=True)
         return model
